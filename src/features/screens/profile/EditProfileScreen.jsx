@@ -8,11 +8,11 @@ import {
   StyleSheet,
 } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
-import useProfile from "../../hooks/useProfile";
-import { setUserId } from "../../api/profileApi";
+import useProfile from "../hooks/useProfile";
+import { Alert } from "react-native";
 
 export default function EditProfileScreen() {
-  const { profile, loading, updateProfile  , loadProfile} = useProfile();
+  const { profile, loading, updateProfile, loadProfile } = useProfile();
 
   const [name, setName] = useState("");
   const [businessName, setBusinessName] = useState("");
@@ -21,21 +21,45 @@ export default function EditProfileScreen() {
   const [gstNumber, setGstNumber] = useState("");
 
   useEffect(() => {
-    setUserId(); 
     loadProfile();
-  },[]);
+  }, []);
 
-
+  
   useEffect(() => {
-    
     if (profile) {
-      setName(profile.name);
-      setBusinessName(profile.businessName);
-      setContactNumber(profile.contactNumber);
+      setName(profile.name || "");
+      setBusinessName(profile.businessName || "");
+      setContactNumber(profile.contactNumber || "");
       setIsGstRegistered(profile.isGstRegistered);
       setGstNumber(profile.gstNumber || "");
     }
   }, [profile]);
+
+  //  Submit handler 
+  const handleSubmit = () => {
+    if (!name || !businessName || !contactNumber) {
+      Alert.alert("Error", "All fields are required");
+      return;
+    }
+
+    if (isGstRegistered === null) {
+      Alert.alert("Error", "Select GST option");
+      return;
+    }
+
+    if (isGstRegistered && !gstNumber) {
+      Alert.alert("Error", "Enter GST number");
+      return;
+    }
+
+    updateProfile({
+      name,
+      businessName,
+      contactNumber,
+      isGstRegistered,
+      gstNumber,
+    });
+  };
 
   if (loading) return <ActivityIndicator />;
 
@@ -66,6 +90,7 @@ export default function EditProfileScreen() {
           onChangeText={setContactNumber}
           style={styles.input}
           placeholder="Enter contact number"
+          keyboardType="phone-pad"
         />
 
         <Text style={styles.label}>GST Registered</Text>
@@ -93,24 +118,12 @@ export default function EditProfileScreen() {
         )}
 
         <View style={styles.buttonContainer}>
-          <Button
-            title="Update Profile"
-            onPress={() =>
-              updateProfile({
-                name,
-                businessName,
-                contactNumber,
-                isGstRegistered,
-                gstNumber,
-              })
-            }
-          />
+          <Button title="Update Profile" onPress={handleSubmit} />
         </View>
       </View>
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,

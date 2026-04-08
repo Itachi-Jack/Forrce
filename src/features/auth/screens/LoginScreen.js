@@ -27,14 +27,11 @@ export default function LoginScreen(){
             Alert.alert('Invalid Mobile Number');
             return;
         }
-
         try{
-            console.log("Sending Otp");
-            setLoading(true);
-            const res = await requestOtp(mobile);
-            console.log("Otp Sent : ",res);
-            navigation.navigate("Otp" , {mobile });
-            setLoading(false);
+          setLoading(true);
+           console.log("Sending Otp ");
+           await requestOtp(mobile);
+           navigation.navigate("Otp", { mobile });
         }catch(err){
             Alert.alert("Error Sending OTP");
             setLoading(false);

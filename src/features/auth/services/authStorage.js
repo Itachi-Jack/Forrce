@@ -1,11 +1,11 @@
 import * as Keychain from 'react-native-keychain';
 
-export const savetoken = async (token) => {
+export const saveToken = async (token) => {
     await Keychain.setGenericPassword('auth' , token);  
 };
 
 export const getToken = async () => {
-    const credentials = await Keychain.getGenericPassword;
+    const credentials = await Keychain.getGenericPassword();
     return credentials ? credentials.password : null;
 }
 

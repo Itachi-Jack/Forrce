@@ -14,36 +14,51 @@ import { useAuthStore } from "../store/authStore";
 export default function OtpScreen({navigation}){
     const[otp , setOtp] = useState('');
     const route = useRoute();
-    
-
     const { mobile } = route.params;
     const [loading, setLoading] = useState(false);
+    const login = useAuthStore((state) => state.login);
     
 
-   const verifyOtpHandler = async () => {
-    if(otp.length !== 4){
-        Alert.alert("Invalid Otp");
-        return;
-    }
-    try{
-        setLoading(true);
-        console.log("Verifying : " , mobile , otp);
-        const res = await verifyOtp(mobile , otp);
-        console.log(res);
-        Alert.alert("Success", "Login successful");
-        navigation.replace("Profile");
+  const verifyOtpHandler = async () => {
+  if (otp.length !== 4) {
+    Alert.alert("Invalid Otp");
+    return;
+  }
 
-    }catch (err) {
-      console.log("ERROR:", err?.response?.data);
+  try {
+    setLoading(true);
 
-      Alert.alert(
-        "Verification Failed",
-        err?.response?.data?.message || "Invalid OTP"
-      );
-    } finally {
-      setLoading(false);
+    const res = await verifyOtp(mobile, otp);
+
+    const token = res?.access_token;
+    const isProfileVerified = res?.is_profile_verified;
+
+    if (!token) {
+      Alert.alert("Error", "Token not received");
+      return;
     }
-   };
+
+    await login(token, isProfileVerified);
+
+    if (!isProfileVerified) {
+      navigation.replace("EditProfile");
+    } else {
+      navigation.replace("Home");
+    }
+
+  } catch (err) {
+    console.log("FINAL ERROR:", err);
+
+    const msg =
+      err?.response?.data?.message?.message ||
+      err?.response?.data?.message ||
+      err?.message;
+
+    Alert.alert("Verification Failed", msg || "Invalid OTP");
+  } finally {
+    setLoading(false);
+  }
+};
      return (
     <View style={styles.container}>
       <Text style={styles.title}>Enter OTP</Text>

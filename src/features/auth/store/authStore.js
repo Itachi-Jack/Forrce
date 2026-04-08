@@ -1,16 +1,18 @@
 import { create } from 'zustand';
-import { saveToken, removeToken, getToken } from '../storage/authStorage';
+import { saveToken, removeToken, getToken } from '../services/authStorage';
 
 export const useAuthStore = create((set) => ({
   token: null,
   isAuthenticated: false,
+  isProfileVerified: null,
 
-  login: async (token) => {
+  login: async (token , isProfileVerified) => {
     await saveToken(token);
 
     set({
       token,
       isAuthenticated: true,
+      isProfileVerified,
     });
   },
 
@@ -20,6 +22,7 @@ export const useAuthStore = create((set) => ({
     set({
       token: null,
       isAuthenticated: false,
+      isProfileVerified: null,
     });
   },
 
