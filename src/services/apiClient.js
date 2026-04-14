@@ -19,6 +19,8 @@ api.interceptors.request.use(
       const state = useAuthStore?.getState?.();
 
       const accessToken = state?.token ;
+      // console.log("INTERCEPTOR TOKEN:", accessToken);
+      // console.log("AUTH REQUIRED:", config.authRequired);
 
       if (accessToken && config.authRequired !== false) {
         config.headers = {
@@ -33,11 +35,11 @@ api.interceptors.request.use(
       //   data: config.data,
       //   headers: config.headers,
       // });
-      console.log('➡️ REQUEST:', {headers: config.headers});
+      // console.log('➡️ REQUEST:', {headers: config.headers});
       // console.log('➡️ REQUEST:', config.method, config.baseURL + config.url);
       return config;
     } catch (err) {
-      console.error('🚨 Auth interceptor failed:', err);
+      // console.error('🚨 Auth interceptor failed:', err);
       return config; // 🚑 NEVER block the request
     }
   },
@@ -61,8 +63,6 @@ api.interceptors.response.use(
   },
   async (error) => {
     const status = error.response?.status;
-
-    
 
     // 🔒 Centralized 401 handling
     if (status === 401) {

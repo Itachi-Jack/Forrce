@@ -7,39 +7,44 @@ import {
   Alert,
   ActivityIndicator,
 } from "react-native";
-
+//import { removeToken } from "../services/authStorage";
 import { useState } from "react";
 import { requestOtp } from "../api/authApi";
 import { useNavigation } from "@react-navigation/native";
+import { useAuthStore } from "../store/authStore";
 
-export default function LoginScreen(){
-    
-
-    const navigation = useNavigation();
-    const [mobile, setMobile] = useState('');
-    //const [otp , setOtp] = useState('');
-   // const [step , setStep] = useState('MOBILE');
-    const [loading , setLoading ] = useState(false);
+export default function LoginScreen() {
 
 
-    const sendOtp = async () => {
-        if (mobile.length !== 10) {
-            Alert.alert('Invalid Mobile Number');
-            return;
-        }
-        try{
-          setLoading(true);
-           console.log("Sending Otp ");
-           await requestOtp(mobile);
-           navigation.navigate("Otp", { mobile });
-        }catch(err){
-            Alert.alert("Error Sending OTP");
-            setLoading(false);
-        }
+  const navigation = useNavigation();
+  const [mobile, setMobile] = useState('');
+  //const [otp , setOtp] = useState('');
+  // const [step , setStep] = useState('MOBILE');
+  const [loading, setLoading] = useState(false);
+  const { logout } = useAuthStore();
 
-    };
+  const sendOtp = async () => {
+    if (mobile.length !== 10) {
+      Alert.alert('Invalid Mobile Number');
+      return;
+    }
+    try {
+      setLoading(true);
+      console.log("Sending Otp ");
+      await logout();
 
-     return (
+      await requestOtp(mobile);
+      navigation.navigate("Otp", { mobile });
+    } catch (err) {
+      console.log("OTP ERROR FULL:", err);
+      Alert.alert("Error Sending OTP");
+    } finally {
+      setLoading(false);
+    }
+
+  };
+
+  return (
     <View style={styles.container}>
       <Text style={styles.title}>Welcome Back</Text>
 
@@ -65,11 +70,13 @@ export default function LoginScreen(){
           <Text style={styles.buttonText}>Send OTP</Text>
         )}
       </TouchableOpacity>
+
+
     </View>
   );
-  
 
-    
+
+
 
 
 }

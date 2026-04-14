@@ -30,8 +30,8 @@ export default function OtpScreen({navigation}){
 
     const res = await verifyOtp(mobile, otp);
 
-    const token = res?.access_token;
-    const isProfileVerified = res?.is_profile_verified;
+    const token = res?.message?.access_token;
+    const isProfileVerified = res?.message?.is_profile_verified;
 
     if (!token) {
       Alert.alert("Error", "Token not received");
@@ -43,7 +43,7 @@ export default function OtpScreen({navigation}){
     if (!isProfileVerified) {
       navigation.replace("EditProfile");
     } else {
-      navigation.replace("Home");
+      navigation.replace("Feed");
     }
 
   } catch (err) {

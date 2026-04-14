@@ -2,10 +2,10 @@ import { useState , useEffect } from "react";
 export default function useProfileForm(profile , onSubmit){
     const[form , setForm] = useState({
         name : "",
-        businessNmae : "",
+    //    businessNmae : "",
         contactNumber: "",
-        isGstRegistered: null,
-        gstNumber: "",
+    //    isGstRegistered: null,
+     //   gstNumber: "",
 
     });
 
@@ -13,10 +13,10 @@ export default function useProfileForm(profile , onSubmit){
         if(profile) {
             setForm({
         name: profile.name || "",
-        businessName: profile.businessName || "",
+    //    businessName: profile.businessName || "",
         contactNumber: profile.contactNumber || "",
-        isGstRegistered: profile.isGstRegistered,
-        gstNumber: profile.gstNumber || "",
+    //    isGstRegistered: profile.isGstRegistered,
+    //    gstNumber: profile.gstNumber || "",
       });
     }
     },[profile]);

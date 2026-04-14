@@ -8,6 +8,7 @@ export const useAuthStore = create((set) => ({
 
   login: async (token , isProfileVerified) => {
     await saveToken(token);
+   // delete apiClient.defaults.headers.Authorization;
 
     set({
       token,
