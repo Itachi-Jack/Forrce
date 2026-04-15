@@ -27,48 +27,49 @@ export default function useProfile() {
     setLoading(true);
     try {
       const payload = {
-        seller_name: formData.name,
-        mobile_no: formData.contactNumber,
-        is_minimum_order_value: toYesNo(formData.isPurchaseMinOrder),
+  seller_name: formData.seller_name,
+  mobile_no: formData.mobile_no,
 
-        minimum_order_value : formData.isPurchaseMinOrder
-          ? String(Number(formData.purchaseMinOrderVal) || 0) : "0",
+  is_minimum_order_value: toYesNo(formData.is_minimum_order_value),
 
-        is_delivery: toYesNo(formData.isDelivery),
+  minimum_order_value: formData.is_minimum_order_value
+    ? String(Number(formData.minimum_order_value) || 0)
+    : "0",
 
-        serviceable_radius: formData.isDelivery
-          ? String(Number(formData.serviceableRadius) || 0)
-          : "0",
+  is_delivery: toYesNo(formData.is_delivery),
 
-        deliver_in: formData.isDelivery
-          ? String(Number(formData.deliveryIn) || 0)
-          : "0",
+  serviceable_radius: formData.is_delivery
+    ? String(Number(formData.serviceable_radius) || 0)
+    : "0",
 
-        is_minimum_order_value_for_delivery: toYesNo(formData.isMinOrder),
+  deliver_in: formData.is_delivery
+    ? String(Number(formData.deliver_in) || 0)
+    : "0",
 
-        minimum_order_value_for_delivery: formData.isMinOrder
-          ? String(Number(formData.minOrderValue) || 0)
-          : "0",
+  is_minimum_order_value_for_delivery: toYesNo(formData.is_minimum_order_value_for_delivery),
 
-        is_free_delivery: toYesNo(formData.isFreeDelivery),
+  minimum_order_value_for_delivery: formData.is_minimum_order_value_for_delivery
+    ? String(Number(formData.minimum_order_value_for_delivery) || 0)
+    : "0",
 
-        delivery_charges: formData.isFreeDelivery
-          ? "0"
-          : String(Number(formData.deliveryCharges) || 0),
+  is_free_delivery: toYesNo(formData.is_free_delivery),
 
-        is_minimum_order_value_for_free_delivery: toYesNo(formData.isMinOrderFree),
+  delivery_charges: formData.is_free_delivery
+    ? "0"
+    : String(Number(formData.delivery_charges) || 0),
 
-        minimum_order_value_for_free_delivery: formData.isMinOrderFree
-          ? String(Number(formData.minOrderFreeValue) || 0)
-          : "0",
+  is_minimum_order_value_for_free_delivery: toYesNo(formData.is_minimum_order_value_for_free_delivery),
 
-        is_self_pickup: toYesNo(formData.selfPickup),
+  minimum_order_value_for_free_delivery: formData.is_minimum_order_value_for_free_delivery
+    ? String(Number(formData.minimum_order_value_for_free_delivery) || 0)
+    : "0",
 
-        is_courier: toYesNo(formData.isCourier),
+  is_self_pickup: toYesNo(formData.is_self_pickup),
 
-        delivery_info: (formData.deliveryInfo || "").trim(),
+  is_courier: toYesNo(formData.is_courier),
 
-      };
+  delivery_info: (formData.delivery_info || "").trim(),
+};
       console.log("PAYLOAD:", payload);
       
       await updateProfileApi(payload);
@@ -84,9 +85,11 @@ export default function useProfile() {
       setProfile(normalized);
 
       Alert.alert("Profile Updated");
+      return Promise.resolve();
     } catch (err) {
       console.log(err.response?.data);
       Alert.alert("Failed please try after some time");
+      return Promise.reject(err);
     } finally {
       setLoading(false);
     }

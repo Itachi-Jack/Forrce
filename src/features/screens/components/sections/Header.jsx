@@ -1,26 +1,19 @@
 import { StyleSheet, Text, View } from "react-native";
 
-export default function Header() {
-
-    return (
-        <View style={styles.hero}>
-                <View style={styles.heroBubble1} />
-                <View style={styles.heroBubble2} />
-                {/* //<Text style = {styles.sellerCode}>{sellerCode}</Text> */}
-        
-                <Text style={styles.heroTitle}>Edit profile</Text>
-                <Text style={styles.heroSub}>
-                  Manage your personal details
-                </Text>
-              </View>
-    )
+export default function Header({ title, subtitle }) {
+  return (
+    <View style={styles.hero}>
+      <View style={styles.heroBubble1} />
+      <View style={styles.heroBubble2} />
+      <Text style={styles.heroTitle}>{title}</Text>
+      <Text style={styles.heroSub}>{subtitle}</Text>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: "#f0f4ff" },
-
   hero: {
-    backgroundColor: "#534AB7",
+    backgroundColor: "#1D9E75",   // ✅ was #534AB7 (purple), now green
     padding: 32,
     paddingBottom: 48,
     overflow: "hidden",
@@ -31,7 +24,7 @@ const styles = StyleSheet.create({
     width: 180,
     height: 180,
     borderRadius: 90,
-    backgroundColor: "#7F77DD",
+    backgroundColor: "#5DCAA5",   // ✅ was #7F77DD (purple), now light green
     opacity: 0.35,
     top: -40,
     right: -40,
@@ -42,7 +35,7 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 50,
-    backgroundColor: "#AFA9EC",
+    backgroundColor: "#9FE1CB",   // ✅ was #AFA9EC (purple), now mint green
     opacity: 0.25,
     bottom: -20,
     left: 10,
@@ -55,6 +48,5 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
 
-  heroSub: { fontSize: 13, color: "#CECBF6" },
-
+  heroSub: { fontSize: 13, color: "#E1F5EE" },  // ✅ was #CECBF6 (purple tint)
 });

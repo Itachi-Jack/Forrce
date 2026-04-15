@@ -11,3 +11,11 @@ export const updateProfile = async (data) => {
   console.log("UPDATE PROFILE RESPONSE:", res);
   return res;
 }
+
+export const getNewProfile = async () =>{
+
+  const res = await apiClient.get
+  ('/api/method/fis_cart.api.v1.seller_app.profile.seller_profile.index',);
+
+  return res;
+}
